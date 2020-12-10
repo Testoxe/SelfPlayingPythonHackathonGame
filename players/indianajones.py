@@ -19,7 +19,11 @@ class IndianaJones(Player):
         # Renvoie `True` si le chemin est sûr
         is_safe = (
             lambda x, y: game.background[y][x] == Tile.FLOOR
-            and not game.tile_grid[y][x].is_dangerous()
+            and not (game.tile_grid[y][x].is_dangerous() and )
+        )
+
+        line_fireball = (
+            lambda x, y: game.background
         )
 
         # Si on est en danger, on cherche un endroit sûr
@@ -42,6 +46,10 @@ class IndianaJones(Player):
             Action.MOVE_DOWN,
             Action.MOVE_LEFT,
             Action.MOVE_RIGHT,
+            Action.ATTACK_UP,
+            Action.ATTACK_DOWN,
+            Action.ATTACK_LEFT,
+            Action.ATTACK_RIGHT,
         ):
             # Coordonnées de la case voisine
             x, y = direction.apply((self.x, self.y))
@@ -49,14 +57,14 @@ class IndianaJones(Player):
             # Si on peut aller dans cette direction, on explore les possibilités offertes
             if self.is_action_valid(direction):
                 # On retient quelle est la direction de départ
-                paths.append((x, y, direction))
+                paths.append((x, y, direction, cost(x, y)))
                 explored[y][x] = True
 
         # Tant qu'il existe des chemins possibles
         while len(paths) > 0:
 
             # On regarde un chemin envisageable
-            x, y, direction = paths.pop(0)
+            x, y, direction = paths.pop()
 
             # Si sa destination est acceptable, on va dans la direction de départ
             # pour s'y rendre
@@ -70,6 +78,10 @@ class IndianaJones(Player):
                 Action.MOVE_DOWN,
                 Action.MOVE_LEFT,
                 Action.MOVE_RIGHT,
+                Action.ATTACK_UP,
+                Action.ATTACK_DOWN,
+                Action.ATTACK_LEFT,
+                Action.ATTACK_RIGHT,
             ):
                 # On regarde la case voisine
                 new_x, new_y = d.apply((x, y))
@@ -80,3 +92,49 @@ class IndianaJones(Player):
                     explored[new_y][new_x] = True
 
         return Action.WAIT
+
+    def line_fireball(x, y, game):
+        x_line = game.entity_grid[:][x]
+        y_line = game.entity_grid[y][:]
+        # Checking if coming toward player
+        for index in range(len(game.tile_grid):
+            entity = game.entity_grid[index][x]
+            if isinstance(entity, entities.Fireball):
+                chibool = True
+                if index > y and entity.action == Action.MOVE_UP:
+                    
+                    for indexa in range(y, index):
+                        if game.tile_grid[indexa][x] == Tile.WALL:
+                            chibool = False
+                    if chibool:
+                        return chibool
+                if index < y and entity.action == Action.MOVE_DOWN:
+                    for indexa in range(index, y):
+                        if game.tile_grid[indexa][x] == Tile.WALL:
+                            chibool = False
+                    if chibool:
+                        return chibool
+
+            oumtity = game.entity_grid[y][index]
+            if isinstance(oumtity, entities.Fireball):
+                chibool = True
+                if index > x and entity.action == Action.MOVE_LEFT:
+                    
+                    for indexa in range(x, index):
+                        if game.tile_grid[x][indexa] == Tile.WALL:
+                            chibool = False
+                    if chibool:
+                        return chibool
+                if index < x and entity.action == Action.MOVE_RIGHT:
+                    for indexa in range(index, x):
+                        if game.tile_grid[x][indexa] == Tile.WALL:
+                            chibool = False
+                    if chibool:
+                        return chibool
+        return False
+                
+
+    # L9wada l7assiba
+    def cost(x, y):
+        if accept_target
+
